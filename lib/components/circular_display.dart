@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
-import 'package:nurtura_grow/theme/colors.dart';
+
+import '../theme/colors.dart';
 
 class CircularDisplay extends StatelessWidget {
   final double progress;
@@ -20,13 +21,13 @@ class CircularDisplay extends StatelessWidget {
           alignment: Alignment.center,
           children: [
             SizedBox(
-              width: 80,
-              height: 80,
+              width: 60,
+              height: 60,
               child: CircularProgressIndicator(
                 value: progress / 100,
                 color: AppColors.primaryColor,
                 backgroundColor: Colors.grey[400],
-                strokeWidth: 10.0,
+                strokeWidth: 8.0,
               ),
             ),
             Text(
@@ -34,14 +35,14 @@ class CircularDisplay extends StatelessWidget {
               style: const TextStyle(
                 color: Colors.black,
                 fontWeight: FontWeight.bold,
-                fontSize: 18,
+                fontSize: 12,
               ),
             ),
           ],
         ),
         const SizedBox(height: 8),
         SizedBox(
-          width: 100,
+          width: 80,
           child: Center(
             child: Text(
               dataName,
@@ -50,7 +51,7 @@ class CircularDisplay extends StatelessWidget {
               style: const TextStyle(
                 color: Colors.black,
                 fontWeight: FontWeight.bold,
-                fontSize: 16,
+                fontSize: 12,
               ),
             ),
           ),

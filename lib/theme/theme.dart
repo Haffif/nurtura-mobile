@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:nurtura_grow/theme/colors.dart';
+import 'package:nurtura/theme/colors.dart';
 
 class AppTheme {
   static ThemeData get projectTheme {

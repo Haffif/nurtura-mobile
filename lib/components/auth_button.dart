@@ -1,5 +1,4 @@
 import 'package:flutter/material.dart';
-import 'package:nurtura_grow/theme/colors.dart';
 
 class AuthButton extends StatelessWidget {
   final String text;
@@ -26,7 +25,7 @@ class AuthButton extends StatelessWidget {
       ),
       child: Text(
         text,
-        style: const TextStyle(fontSize: 20, fontWeight: FontWeight.bold),
+        style: const TextStyle(fontSize: 12, fontWeight: FontWeight.bold),
       ),
     );
   }

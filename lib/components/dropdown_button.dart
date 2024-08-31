@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
-import 'package:nurtura_grow/theme/colors.dart';
+import 'package:nurtura/theme/colors.dart';
+import 'package:webview_flutter/webview_flutter.dart';
 
 class CustomDropdownMenuItem {
   final String text;
@@ -45,7 +46,7 @@ class DropdownButtonComponent extends StatelessWidget {
             text,
             style: const TextStyle(
               color: Colors.black,
-              fontSize: 24,
+              fontSize: 20,
             ),
           ),
           trailing: hasDropdown
@@ -83,10 +84,35 @@ class DropdownButtonComponent extends StatelessWidget {
               : null,
           onTap: () {
             if (!hasDropdown) {
-              // Handle button tap for the case with no dropdown
+              print("inkwell tap");
+              Navigator.push(
+                context,
+                MaterialPageRoute(
+                  builder: (context) => WebViewPage(url: 'https://haffifs-organization.gitbook.io/nurturagrow-mobile'),
+                ),
+              );
             }
           },
         ),
+      ),
+    );
+  }
+}
+
+class WebViewPage extends StatelessWidget{
+  final String url;
+
+  const WebViewPage({Key? key, required this.url}) : super(key: key);
+
+  @override
+  Widget build(BuildContext context) {
+    return Scaffold(
+      appBar: AppBar(
+        title: Text('Panduan Aplikasi'),
+        backgroundColor: AppColors.primaryColor,
+      ),
+      body: WebView(
+        initialUrl: url,
       ),
     );
   }

@@ -1,46 +1,99 @@
+import 'package:flutter/foundation.dart';
+import 'package:flutter/gestures.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter_map/flutter_map.dart';
-import 'package:latlong2/latlong.dart';
+import 'package:google_maps_flutter/google_maps_flutter.dart';
 
-class MapComponent extends StatelessWidget {
-  final String endpointUrl;
-  final double latitude;
-  final double longitude;
+class MapComponent extends StatefulWidget {
+  final double initialLatitude;
+  final double initialLongitude;
+  final Function(double, double) onLocationSelected;
 
   const MapComponent({
     Key? key,
-    required this.endpointUrl,
-    required this.latitude,
-    required this.longitude,
+    required this.initialLatitude,
+    required this.initialLongitude,
+    required this.onLocationSelected,
   }) : super(key: key);
 
   @override
-  Widget build(BuildContext context) {
-    return FlutterMap(
-      options: MapOptions(
-        center: LatLng(latitude, longitude),
-        zoom: 13.0,
+  _MapComponentState createState() => _MapComponentState();
+}
+
+class _MapComponentState extends State<MapComponent> {
+  late GoogleMapController mapController;
+  final Set<Marker> _markers = {};
+
+  void _onMapCreated(GoogleMapController controller) {
+    mapController = controller;
+    _markers.add(
+      Marker(
+        markerId: MarkerId('initial-marker'),
+        position: LatLng(widget.initialLatitude, widget.initialLongitude),
       ),
-      children: [
-        TileLayer(
-          urlTemplate: endpointUrl,
-          subdomains: const ['a', 'b', 'c'],
+    );
+  }
+
+  void _onTap(LatLng location) {
+    setState(() {
+      _markers.clear();
+      _markers.add(
+        Marker(
+          markerId: MarkerId(location.toString()),
+          position: location,
         ),
-        MarkerLayer(
-          markers: [
-            Marker(
-              width: 80.0,
-              height: 80.0,
-              point: LatLng(latitude, longitude),
-              builder: (ctx) => const Icon(
-                Icons.location_pin,
-                color: Colors.red,
-                size: 40.0,
-              ),
+      );
+    });
+    widget.onLocationSelected(location.latitude, location.longitude);
+    _moveCamera(location);
+  }
+
+  void _moveCamera(LatLng location) {
+    mapController.animateCamera(
+      CameraUpdate.newCameraPosition(
+        CameraPosition(target: location, zoom: 16.0),
+      ),
+    );
+  }
+
+  @override
+  Widget build(BuildContext context) {
+    return SizedBox(
+      height: 280,
+      width: double.infinity,
+      child: GoogleMap(
+        onMapCreated: _onMapCreated,
+        initialCameraPosition: CameraPosition(
+          target: LatLng(widget.initialLatitude, widget.initialLongitude),
+          zoom: 16.0,
+        ),
+        markers: _markers,
+        onTap: _onTap,
+        zoomControlsEnabled: true,
+        myLocationEnabled: true,
+        myLocationButtonEnabled: true,
+        mapType: MapType.normal,
+        gestureRecognizers: Set()
+          ..add(
+            Factory<PanGestureRecognizer>(
+                  () => PanGestureRecognizer(),
             ),
-          ],
-        ),
-      ],
+          )
+          ..add(
+            Factory<ScaleGestureRecognizer>(
+                  () => ScaleGestureRecognizer(),
+            ),
+          )
+          ..add(
+            Factory<TapGestureRecognizer>(
+                  () => TapGestureRecognizer(),
+            ),
+          )
+          ..add(
+            Factory<VerticalDragGestureRecognizer>(
+                  () => VerticalDragGestureRecognizer(),
+            ),
+          ),
+      ),
     );
   }
 }

@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:nurtura_grow/theme/colors.dart';
+import 'package:nurtura/theme/colors.dart';
 
 class DashboardMenu extends StatelessWidget {
   final Function()? onTap;
@@ -21,12 +21,12 @@ class DashboardMenu extends StatelessWidget {
         children: [
           Center(
             child: Container(
-              height: 80,
-              width: 80,
+              height: 60,
+              width: 60,
               padding: const EdgeInsets.all(16),
               decoration: BoxDecoration(
                 color: AppColors.primaryColor,
-                borderRadius: BorderRadius.circular(2)
+                borderRadius: BorderRadius.circular(4)
               ),
               child: Center(
                 child: Column(
@@ -41,6 +41,7 @@ class DashboardMenu extends StatelessWidget {
           const SizedBox(height: 8),
           Text(
             text,
+            style: TextStyle(fontSize: 12),
           )
         ],
       ),
